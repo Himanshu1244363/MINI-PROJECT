@@ -10,6 +10,9 @@ dotenv.config();
 
 const app = express();
 
+// ✅ Render/Proxy ke liye zaruri
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -42,15 +45,12 @@ const autoSeed = async () => {
     if (productCount === 0 || userCount === 0) {
       console.log('🌱 Database empty — auto seeding...');
 
-      // Clear existing
       await Product.deleteMany();
       await User.deleteMany();
 
-      // Create users
       await User.create({ name: 'Admin User', email: 'admin@shopwave.in', password: 'admin123456', role: 'admin' });
       await User.create({ name: 'Demo User', email: 'demo@shopwave.in', password: 'demo123456', role: 'user' });
 
-      // Sample products
       const sampleProducts = [
         { name: 'Apple iPhone 15 Pro 256GB', description: 'A17 Pro chip, titanium design, 48MP camera system.', price: 134900, originalPrice: 149900, discount: 10, category: 'Electronics', brand: 'Apple', stock: 50, rating: 4.8, numReviews: 320, sold: 1200, isFeatured: true, images: [{ url: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600', isPrimary: true }], tags: ['iphone', 'apple', 'smartphone', 'phone', 'mobile', '5g', 'ios'] },
         { name: 'Samsung Galaxy S24 Ultra 512GB', description: 'Built-in S Pen, 200MP camera, Galaxy AI features.', price: 129999, originalPrice: 139999, discount: 7, category: 'Electronics', brand: 'Samsung', stock: 35, rating: 4.7, numReviews: 218, sold: 890, isFeatured: true, images: [{ url: 'https://images.unsplash.com/photo-1706439218479-01f8c0c53503?w=600', isPrimary: true }], tags: ['samsung', 'galaxy', 'smartphone', 'phone', 'mobile', '5g', 'android'] },
@@ -98,7 +98,6 @@ const autoSeed = async () => {
       for (const p of sampleProducts) {
         await Product.create(p);
       }
-
       console.log('✅ Auto seed complete! 41 products added.');
     } else {
       console.log(`✅ Database already has ${productCount} products — skipping seed.`);
