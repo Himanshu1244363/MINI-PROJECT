@@ -44,7 +44,7 @@ const autoSeed = async () => {
     const User = require('./models/User');
     const productCount = await Product.countDocuments();
     const userCount = await User.countDocuments();
-    if (productCount === 0 || userCount === 0) {
+    if (productCount === 0 || userCount === 0 || process.env.FORCE_SEED === 'true')  {
       console.log('🌱 Auto seeding...');
       await Product.deleteMany();
       await User.deleteMany();
