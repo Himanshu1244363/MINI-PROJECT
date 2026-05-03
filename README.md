@@ -281,3 +281,5 @@ MIT License. Use freely for personal and commercial projects.
 <div align="center">
 Made with ❤️ and ☕ | ShopWave v1.0.0
 </div>
+#   S h o p W a v e _ P r o j e c t  
+ 
